@@ -44,12 +44,9 @@ const transform = (node: Node | RootFragment, options: DomParserReactOptions): J
 }
 
 const element = (node: HTMLElement, options: DomParserReactOptions) => {
-  const space = node.namespaceURI
+  const isHtml = node.namespaceURI === HTML_NAMESPACE
 
-  // TODO: support SVG
-  if (space !== HTML_NAMESPACE) return null
-
-  const tagName = node.tagName.toLowerCase()
+  const tagName = isHtml ? node.tagName.toLowerCase() : node.tagName
   const attributes = getAttributeNames(node)
 
   const Component = options.components
@@ -76,11 +73,18 @@ const element = (node: HTMLElement, options: DomParserReactOptions) => {
     } else {
       const key = domPropertyRecord[attr] || attr
 
-      props[key] = key in node
+      props[key] = (isHtml && key in node)
         ? node[key as keyof HTMLElement]
         : node.getAttribute(attr) || ''
     }
   })
+
+  // for SVG
+  if (!isHtml) {
+    props.dangerouslySetInnerHTML = { __html: node.innerHTML }
+
+    return options.createElement(Component, props)
+  }
 
   return options.createElement(
     Component,
