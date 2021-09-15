@@ -3,7 +3,7 @@ import { DOCUMENT_FRAGMENT_NODE, DOCUMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '
 import { HTML_NAMESPACE } from '../constants/web-namespace'
 import { domPropertyRecord } from './properties'
 
-interface RootFragment {
+export interface RootFragment {
   nodeType: typeof DOCUMENT_FRAGMENT_NODE
   childNodes: ArrayLike<ChildNode>
 }
@@ -14,7 +14,7 @@ export interface DomParserReactOptions {
   components?: Record<string, ComponentType<any>>
 }
 
-export const parse = (source: string | Node, options: DomParserReactOptions): JSX.Element | string | null => {
+export const parse = (source: string | Node | RootFragment, options: DomParserReactOptions): JSX.Element | string | null => {
   const dom = typeof source === 'string' ? createDom(source) : source
 
   return transform(dom, options)

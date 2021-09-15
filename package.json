@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npm run build:rollup && npm run build:types",
     "build:rollup": "rollup -c",
-    "build:types": "tsc --declaration --emitDeclarationOnly --declarationDir dist/types --jsx react --jsxFactory createElement --skipLibCheck src/index.tsx",
+    "build:types": "tsc -p tsconfig.declaration.json",
     "test": "jest"
   },
   "keywords": [],
@@ -19,12 +19,14 @@
   "license": "MIT",
   "dependencies": {
     "@types/react": "^17.0.20",
+    "jsdom": "^17.0.0",
     "react": "^17.0.2"
   },
   "devDependencies": {
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-typescript": "^8.2.5",
     "@types/jest": "^27.0.1",
+    "@types/jsdom": "^16.2.13",
     "@types/react-dom": "^17.0.9",
     "jest": "^27.2.0",
     "react-dom": "^17.0.2",

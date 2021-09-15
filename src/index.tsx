@@ -1,10 +1,10 @@
 import { ComponentType, createElement, Fragment, useMemo } from 'react'
-import { parse, DomParserReactOptions } from './compiler/parse'
+import { parse, DomParserReactOptions, RootFragment } from './compiler/parse'
 
 export { parse, DomParserReactOptions }
 
 export interface DomParserReactProps {
-  source: string | Node
+  source: string | Node | RootFragment
   components?: Record<string, ComponentType<any>>
   createElement?: typeof createElement
   Fragment?: ComponentType | string

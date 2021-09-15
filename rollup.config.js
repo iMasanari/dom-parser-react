@@ -1,15 +1,18 @@
 // @ts-check
 
+import { join } from 'path'
 import buble from '@rollup/plugin-buble'
 import typescript from '@rollup/plugin-typescript'
-import {terser} from 'rollup-plugin-terser'
-import packages from './package.json'
+import { terser } from 'rollup-plugin-terser'
+import rootPackages from './package.json'
+import serverPackages from './server/package.json'
 
 const globals = {
   'react': 'React',
+  'jsdom': 'JSDOM',
 }
 
-export default {
+export default [{
   input: './src/index.tsx',
   plugins: [
     typescript(),
@@ -18,7 +21,7 @@ export default {
   external: Object.keys(globals),
   output: [{
     format: 'iife',
-    file: `dist/${packages.name}.js`,
+    file: `dist/${rootPackages.name}.js`,
     name: 'DomParserReact',
     exports: 'named',
     globals,
@@ -27,10 +30,25 @@ export default {
     ],
   }, {
     format: 'cjs',
-    file: packages.main,
+    file: rootPackages.main,
     exports: 'named',
   }, {
     format: 'es',
-    file: packages.module,
+    file: rootPackages.module,
   }],
-}
+}, {
+  input: './src/server.ts',
+  plugins: [
+    typescript(),
+    buble(),
+  ],
+  external: Object.keys(globals),
+  output: [{
+    format: 'cjs',
+    file: join('server', serverPackages.main),
+    exports: 'named',
+  }, {
+    format: 'es',
+    file: join('server', serverPackages.module),
+  }],
+}]
