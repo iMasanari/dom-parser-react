@@ -73,7 +73,7 @@ const element = (node: HTMLElement, options: DomParserReactOptions) => {
     } else {
       const key = domPropertyRecord[attr] || attr
 
-      props[key] = (isHtml && key in node)
+      props[key] = (isHtml && key !== 'list' && key in node)
         ? node[key as keyof HTMLElement]
         : node.getAttribute(attr) || ''
     }

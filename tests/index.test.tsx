@@ -56,6 +56,14 @@ it('renders styles', () => {
   expect(container!.innerHTML).toBe('<div style="padding: 10px;"></div>')
 })
 
+it('renders input list', () => {
+  act(() => {
+    render(<DomParserReact source={'<input list="list" /><datalist id="list"></datalist>'} />, container)
+  })
+
+  expect(container!.innerHTML).toBe('<input list="list"><datalist id="list"></datalist>')
+})
+
 it('renders components', () => {
   const source = '<div class="text">components</div>'
 
