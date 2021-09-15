@@ -1,0 +1,36 @@
+{
+  "name": "dom-parser-react",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/dom-parser-react.cjs.js",
+  "module": "dist/dom-parser-react.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:rollup && npm run build:types",
+    "build:rollup": "rollup -c",
+    "build:types": "tsc --declaration --emitDeclarationOnly --declarationDir dist/types --jsx react --jsxFactory createElement --skipLibCheck src/index.tsx",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^17.0.20",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/jest": "^27.0.1",
+    "@types/react-dom": "^17.0.9",
+    "jest": "^27.2.0",
+    "react-dom": "^17.0.2",
+    "rollup": "^2.56.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
+  }
+}
