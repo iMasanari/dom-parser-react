@@ -1,5 +1,5 @@
 import { ComponentType, createElement, Fragment, useMemo } from 'react'
-import { parse, DomParserReactOptions, RootFragment } from './compiler/parse'
+import { parse, DomParserReactOptions, RootFragment } from './parser/parse'
 
 export { parse, DomParserReactOptions }
 

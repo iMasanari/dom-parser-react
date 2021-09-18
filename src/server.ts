@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom'
-import { RootFragment } from './compiler/parse'
 import { DOCUMENT_FRAGMENT_NODE } from './constants/node-type'
+import { RootFragment } from './parser/parse'
 
 export const createDom = (source: string): Node | RootFragment => {
   const { DOMParser } = new JSDOM().window

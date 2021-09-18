@@ -2,6 +2,7 @@ import { ComponentType, createElement, ReactNode } from 'react'
 import { DOCUMENT_FRAGMENT_NODE, DOCUMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../constants/node-type'
 import { HTML_NAMESPACE } from '../constants/web-namespace'
 import { domPropertyRecord } from './properties'
+import { parseStyle } from './style-parser'
 
 export interface RootFragment {
   nodeType: typeof DOCUMENT_FRAGMENT_NODE
@@ -57,19 +58,7 @@ const element = (node: HTMLElement, options: DomParserReactOptions) => {
 
   attributes.forEach((attr) => {
     if (attr === 'style') {
-      const style = node[attr]
-      const styles = {} as Record<string, unknown>
-
-      for (let i = 0, len = style.length; i < len; i++) {
-        const key = style[i]
-        const styleName = key.replace(/(^-ms)?-(.)/g, (_, ms, char) =>
-          (ms ? 'ms' : '') + char.toUpperCase()
-        )
-
-        styles[styleName] = style[key as keyof CSSStyleDeclaration]
-      }
-
-      props[attr] = styles
+      props[attr] = parseStyle(node.getAttribute(attr) || '')
     } else {
       const key = domPropertyRecord[attr] || attr
 
