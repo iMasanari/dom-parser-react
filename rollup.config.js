@@ -2,6 +2,7 @@
 
 import { join } from 'path'
 import buble from '@rollup/plugin-buble'
+import replace from '@rollup/plugin-replace'
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
 import rootPackages from './package.json'
@@ -41,14 +42,31 @@ export default [{
   plugins: [
     typescript(),
     buble(),
+    replace({ 
+      preventAssignment: true,
+      values: { 'process.env.TARGET': JSON.stringify('node') },
+     }),
   ],
   external: Object.keys(globals),
   output: [{
     format: 'cjs',
     file: join('server', serverPackages.main),
     exports: 'named',
-  }, {
-    format: 'es',
-    file: join('server', serverPackages.module),
+  }],
+}, {
+  input: './src/server.ts',
+  plugins: [
+    typescript(),
+    buble(),
+    replace({
+      preventAssignment: true,
+      values: { 'process.env.TARGET': JSON.stringify('browser') },
+    }),
+  ],
+  external: Object.keys(globals),
+  output: [{
+    format: 'cjs',
+    file: join('server', serverPackages.browser),
+    exports: 'named',
   }],
 }]

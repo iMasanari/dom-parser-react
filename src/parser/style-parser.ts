@@ -43,9 +43,9 @@ export const parseStyle = (inlineStyle: string) => {
 
     switch (token) {
       case ':':
-        property = value.trim().replace(/(^-ms)?-(.)/g, (_, ms, char) =>
-          (ms ? 'ms' : '') + char.toUpperCase()
-        )
+        property = value.trim()
+          .replace(/^-ms-/, 'ms-')
+          .replace(/-(.)/g, (_, char) => char.toUpperCase())
 
         value = ''
 

@@ -111,9 +111,10 @@ const getAttributeNames = (node: HTMLElement) => {
 
   // for IE
   const attributes = node.attributes
+  const length = attributes.length
   const result = new Array<string>(length)
 
-  for (let i = 0, length = attributes.length; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     result[i] = attributes[i].name
   }
 

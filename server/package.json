@@ -1,5 +1,5 @@
 {
-  "main": "../dist/server.cjs.js",
-  "module": "../dist/server.esm.js",
+  "main": "../dist/server.node.js",
+  "browser": "../dist/server.browser.js",
   "types": "../dist/types/server.d.ts"
 }
