@@ -64,6 +64,22 @@ it('renders input list', () => {
   expect(container!.innerHTML).toBe('<input list="list"><datalist id="list"></datalist>')
 })
 
+it('renders a ref', () => {
+  act(() => {
+    render(<DomParserReact source={'<a href="./link">link</a>'} />, container)
+  })
+
+  expect(container!.innerHTML).toBe('<a href="./link">link</a>')
+})
+
+it('renders boolean value', () => {
+  act(() => {
+    render(<DomParserReact source={'<input readonly checked />'} />, container)
+  })
+
+  expect(container!.innerHTML).toBe('<input readonly="" checked="">')
+})
+
 it('renders components', () => {
   const source = '<div class="text">components</div>'
 
@@ -84,7 +100,7 @@ it('renders components', () => {
   )
 })
 
-it('renders html text', () => {
+it('renders svg text', () => {
   const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
   <path d="M19 12H6M12 5l-7 7 7 7"></path>

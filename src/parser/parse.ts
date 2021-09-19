@@ -57,14 +57,21 @@ const element = (node: HTMLElement, options: DomParserReactOptions) => {
   const props = {} as Record<string, unknown>
 
   attributes.forEach((attr) => {
-    if (attr === 'style') {
-      props[attr] = parseStyle(node.getAttribute(attr) || '')
-    } else {
-      const key = domPropertyRecord[attr] || attr
+    const value = node.getAttribute(attr) || ''
 
-      props[key] = (isHtml && key !== 'list' && key in node)
-        ? node[key as keyof HTMLElement]
-        : node.getAttribute(attr) || ''
+    if (attr === 'style') {
+      props[attr] = parseStyle(value)
+    } else {
+      const property = domPropertyRecord[attr] || attr
+
+      props[property] = (
+        isHtml &&
+        property !== 'list' &&
+        property in node &&
+        typeof node[property as keyof HTMLElement] !== 'string'
+      )
+        ? node[property as keyof HTMLElement]
+        : value
     }
   })
 
