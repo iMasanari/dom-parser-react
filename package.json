@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iMasanari/action-reducer.git"
+    "url": "git+https://github.com/iMasanari/dom-parser-react.git"
   },
   "keywords": [
     "react",
