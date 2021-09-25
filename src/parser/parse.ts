@@ -1,8 +1,12 @@
-import { ComponentType, createElement, ReactNode } from 'react'
+import { ComponentType, createElement } from 'react'
 import { DOCUMENT_FRAGMENT_NODE, DOCUMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../constants/node-type'
 import { HTML_NAMESPACE } from '../constants/web-namespace'
 import { domPropertyRecord } from './properties'
 import { parseStyle } from './style-parser'
+
+const map = Array.prototype.map as {
+  call: <T, U>(list: ArrayLike<T>, fn: (value: T, index: number, self: T[]) => U) => U[]
+}
 
 export interface RootFragment {
   nodeType: typeof DOCUMENT_FRAGMENT_NODE
@@ -57,14 +61,21 @@ const element = (node: HTMLElement, options: DomParserReactOptions) => {
   const props = {} as Record<string, unknown>
 
   attributes.forEach((attr) => {
-    if (attr === 'style') {
-      props[attr] = parseStyle(node.getAttribute(attr) || '')
-    } else {
-      const key = domPropertyRecord[attr] || attr
+    const value = node.getAttribute(attr) || ''
 
-      props[key] = (isHtml && key !== 'list' && key in node)
-        ? node[key as keyof HTMLElement]
-        : node.getAttribute(attr) || ''
+    if (attr === 'style') {
+      props[attr] = parseStyle(value)
+    } else {
+      const property = domPropertyRecord[attr] || attr
+
+      props[property] = (
+        isHtml &&
+        property !== 'list' &&
+        property in node &&
+        typeof node[property as keyof HTMLElement] !== 'string'
+      )
+        ? node[property as keyof HTMLElement]
+        : value
     }
   })
 
@@ -91,32 +102,14 @@ const root = (node: DocumentFragment, options: DomParserReactOptions) =>
 
 const text = (node: Text) => node.data
 
-const children = (children: ArrayLike<ChildNode>, options: DomParserReactOptions) => {
-  const result: ReactNode[] = []
-
-  for (let i = 0, len = children.length; i < len; i++) {
-    const child = children[i]
-    const node = transform(child, options)
-
-    if (node) result.push(node)
-  }
-
-  return result
-}
+const children = (children: ArrayLike<ChildNode>, options: DomParserReactOptions) =>
+  map.call(children, child => transform(child, options)).filter(Boolean)
 
 const getAttributeNames = (node: HTMLElement) => {
-  if (node.getAttributeNames != undefined) {
-    return node.getAttributeNames()
-  }
-
   // for IE
-  const attributes = node.attributes
-  const length = attributes.length
-  const result = new Array<string>(length)
-
-  for (let i = 0; i < length; i++) {
-    result[i] = attributes[i].name
+  if (node.getAttributeNames == undefined) {
+    return map.call(node.attributes, attr => attr.name)
   }
 
-  return result
+  return node.getAttributeNames()
 }
