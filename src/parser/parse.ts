@@ -15,7 +15,7 @@ export interface RootFragment {
 
 export interface DOMParserReactOptions {
   createElement: typeof createElement
-  Fragment?: ComponentType | string
+  Fragment: ComponentType | string
   components?: Record<string, ComponentType<any>>
 }
 
@@ -95,7 +95,7 @@ const element = (node: HTMLElement, options: DOMParserReactOptions) => {
 
 const root = (node: DocumentFragment, options: DOMParserReactOptions) =>
   options.createElement(
-    options.Fragment || 'div',
+    options.Fragment,
     null,
     ...children(node.childNodes, options)
   )
