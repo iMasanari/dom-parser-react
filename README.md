@@ -42,18 +42,3 @@ const App = () =>
 
 render(<App />) // `<div class="title"><h1>HTML Text</h1></div>`
 ```
-
-## Universal JavaScript (Browser & Node.js)
-
-```jsx
-import React from 'react'
-import DOMParserReact from 'dom-parser-react'
-import { createDom } from 'dom-parser-react/server'
-
-const htmlText = '<h1>HTML Text</h1>'
-
-const App = () =>
-  <DOMParserReact
-    source={typeof window === 'object' ? htmlText : createDom(htmlText)}
-  />
-```

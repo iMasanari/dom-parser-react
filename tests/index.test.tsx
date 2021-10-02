@@ -7,6 +7,8 @@ import { render, unmountComponentAtNode } from 'react-dom'
 import { act } from 'react-dom/test-utils'
 import DOMParserReact from '../src'
 
+jest.mock('jsdom', () => ({ JSDOM: undefined }))
+
 let container: HTMLDivElement | null = null
 
 beforeEach(() => {
@@ -34,18 +36,6 @@ it('renders html text', () => {
   })
 
   expect(container!.innerHTML).toBe('<div>html text 2</div>')
-})
-
-it('renders DOM', () => {
-  const dom = document.createElement('div')
-  dom.textContent = 'dom text'
-  dom.className = 'dom'
-
-  act(() => {
-    render(<DOMParserReact source={dom} />, container)
-  })
-
-  expect(container!.innerHTML).toBe('<div class="dom">dom text</div>')
 })
 
 it('renders styles', () => {

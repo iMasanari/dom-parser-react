@@ -1,16 +1,12 @@
 import { ComponentType, createElement } from 'react'
 import { DOCUMENT_FRAGMENT_NODE, DOCUMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../constants/node-type'
 import { HTML_NAMESPACE } from '../constants/web-namespace'
+import { htmlParser, RootFragment } from './html-parser'
 import { domPropertyRecord } from './properties'
 import { parseStyle } from './style-parser'
 
 const map = Array.prototype.map as {
   call: <T, U>(list: ArrayLike<T>, fn: (value: T, index: number, self: T[]) => U) => U[]
-}
-
-export interface RootFragment {
-  nodeType: typeof DOCUMENT_FRAGMENT_NODE
-  childNodes: ArrayLike<ChildNode>
 }
 
 export interface DOMParserReactOptions {
@@ -19,20 +15,10 @@ export interface DOMParserReactOptions {
   components?: Record<string, ComponentType<any>>
 }
 
-export const parse = (source: string | Node | RootFragment, options: DOMParserReactOptions): JSX.Element | string | null => {
-  const dom = typeof source === 'string' ? createDom(source) : source
+export const parse = (source: string, options: DOMParserReactOptions): JSX.Element | string | null => {
+  const dom = htmlParser(source)
 
   return transform(dom, options)
-}
-
-const createDom = (source: string): Node | RootFragment => {
-  const parser = new DOMParser()
-  const dom = parser.parseFromString(`<!doctype html><body>${source}`, 'text/html')
-  const nodes = dom.body.childNodes
-
-  return nodes.length === 1
-    ? nodes[0]
-    : { nodeType: DOCUMENT_FRAGMENT_NODE, childNodes: nodes }
 }
 
 const transform = (node: Node | RootFragment, options: DOMParserReactOptions): JSX.Element | string | null => {
@@ -41,7 +27,7 @@ const transform = (node: Node | RootFragment, options: DOMParserReactOptions): J
       return element(node as HTMLElement, options)
     case DOCUMENT_NODE:
     case DOCUMENT_FRAGMENT_NODE:
-      return root(node as DocumentFragment, options)
+      return root(node as RootFragment, options)
     case TEXT_NODE:
       return text(node as Text)
   }
@@ -93,7 +79,7 @@ const element = (node: HTMLElement, options: DOMParserReactOptions) => {
   )
 }
 
-const root = (node: DocumentFragment, options: DOMParserReactOptions) =>
+const root = (node: DocumentFragment | RootFragment, options: DOMParserReactOptions) =>
   options.createElement(
     options.Fragment,
     null,
