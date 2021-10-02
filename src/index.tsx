@@ -1,9 +1,9 @@
 import { ComponentType, createElement, Fragment, useMemo } from 'react'
-import { parse, DomParserReactOptions, RootFragment } from './parser/parse'
+import { parse, DOMParserReactOptions, RootFragment } from './parser/parse'
 
-export { parse, DomParserReactOptions }
+export { parse, DOMParserReactOptions }
 
-export interface DomParserReactProps {
+export interface DOMParserReactProps {
   source: string | Node | RootFragment
   components?: Record<string, ComponentType<any>>
   createElement?: typeof createElement
@@ -11,7 +11,7 @@ export interface DomParserReactProps {
   deps?: unknown[]
 }
 
-export default function DomParserReact(props: DomParserReactProps) {
+export default function DOMParserReact(props: DOMParserReactProps) {
   const element = useMemo(() => (
     parse(props.source, {
       createElement: props.createElement || createElement,

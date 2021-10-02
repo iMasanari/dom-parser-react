@@ -13,13 +13,13 @@ export interface RootFragment {
   childNodes: ArrayLike<ChildNode>
 }
 
-export interface DomParserReactOptions {
+export interface DOMParserReactOptions {
   createElement: typeof createElement
   Fragment?: ComponentType | string
   components?: Record<string, ComponentType<any>>
 }
 
-export const parse = (source: string | Node | RootFragment, options: DomParserReactOptions): JSX.Element | string | null => {
+export const parse = (source: string | Node | RootFragment, options: DOMParserReactOptions): JSX.Element | string | null => {
   const dom = typeof source === 'string' ? createDom(source) : source
 
   return transform(dom, options)
@@ -35,7 +35,7 @@ const createDom = (source: string): Node | RootFragment => {
     : { nodeType: DOCUMENT_FRAGMENT_NODE, childNodes: nodes }
 }
 
-const transform = (node: Node | RootFragment, options: DomParserReactOptions): JSX.Element | string | null => {
+const transform = (node: Node | RootFragment, options: DOMParserReactOptions): JSX.Element | string | null => {
   switch (node.nodeType) {
     case ELEMENT_NODE:
       return element(node as HTMLElement, options)
@@ -48,7 +48,7 @@ const transform = (node: Node | RootFragment, options: DomParserReactOptions): J
   return null
 }
 
-const element = (node: HTMLElement, options: DomParserReactOptions) => {
+const element = (node: HTMLElement, options: DOMParserReactOptions) => {
   const isHtml = node.namespaceURI === HTML_NAMESPACE
 
   const tagName = isHtml ? node.tagName.toLowerCase() : node.tagName
@@ -93,7 +93,7 @@ const element = (node: HTMLElement, options: DomParserReactOptions) => {
   )
 }
 
-const root = (node: DocumentFragment, options: DomParserReactOptions) =>
+const root = (node: DocumentFragment, options: DOMParserReactOptions) =>
   options.createElement(
     options.Fragment || 'div',
     null,
@@ -102,7 +102,7 @@ const root = (node: DocumentFragment, options: DomParserReactOptions) =>
 
 const text = (node: Text) => node.data
 
-const children = (children: ArrayLike<ChildNode>, options: DomParserReactOptions) =>
+const children = (children: ArrayLike<ChildNode>, options: DOMParserReactOptions) =>
   map.call(children, child => transform(child, options)).filter(Boolean)
 
 const getAttributeNames = (node: HTMLElement) => {

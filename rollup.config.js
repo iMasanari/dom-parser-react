@@ -8,8 +8,7 @@ import { terser } from 'rollup-plugin-terser'
 import rootPackages from './package.json'
 import serverPackages from './server/package.json'
 
-const toUpperCamelCase = (str) =>
-  str.replace(/(?:^|-)([a-z])/g, (_, char) => char.toUpperCase())
+const globalName = 'DOMParserReact'
 
 const globals = {
   'react': 'React',
@@ -26,13 +25,13 @@ export default [{
   output: [{
     format: 'iife',
     file: `dist/${rootPackages.name}.js`,
-    name: toUpperCamelCase(rootPackages.name),
+    name: globalName,
     exports: 'named',
     globals,
   }, {
     format: 'iife',
     file: `dist/${rootPackages.name}.min.js`,
-    name: toUpperCamelCase(rootPackages.name),
+    name: globalName,
     exports: 'named',
     globals,
     plugins: [
