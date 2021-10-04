@@ -12,16 +12,25 @@ const globalName = 'DOMParserReact'
 
 const globals = {
   'react': 'React',
-  'jsdom': 'JSDOM',
 }
 
-export default [{
+/** @type {import('rollup').RollupOptions} */
+const baseConfig = {
   input: './src/index.tsx',
+  treeshake: 'smallest',
   plugins: [
     typescript(),
     buble(),
   ],
-  external: Object.keys(globals),
+  external: Object.keys({
+    ...rootPackages.dependencies,
+    ...rootPackages.peerDependencies,
+  }),
+}
+
+/** @type {import('rollup').RollupOptions} */
+const nodeConfig = {
+  ...baseConfig,
   output: [{
     format: 'cjs',
     file: rootPackages.main,
@@ -30,18 +39,18 @@ export default [{
     format: 'es',
     file: rootPackages.module,
   }],
-}, {
-  input: './src/index.tsx',
-  treeshake: 'smallest',
+}
+
+/** @type {import('rollup').RollupOptions} */
+const browserConfig = {
+  ...baseConfig,
   plugins: [
-    typescript(),
-    buble(),
+    ...baseConfig.plugins,
     replace({
       preventAssignment: true,
       values: { 'typeof DOMParser': JSON.stringify('function') },
     }),
   ],
-  external: Object.keys(globals),
   output: [{
     format: 'iife',
     file: `dist/${rootPackages.name}.js`,
@@ -66,4 +75,6 @@ export default [{
     file: join('browser', browserPackages.module),
     exports: 'named',
   }],
-}]
+}
+
+export default [nodeConfig, browserConfig]
