@@ -5,7 +5,9 @@
 import { createElement } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { act } from 'react-dom/test-utils'
-import DomParserReact from '../src'
+import DOMParserReact from '../src'
+
+jest.mock('jsdom', () => ({ JSDOM: undefined }))
 
 let container: HTMLDivElement | null = null
 
@@ -24,33 +26,21 @@ afterEach(() => {
 
 it('renders html text', () => {
   act(() => {
-    render(<DomParserReact source={'<div class="html">html text</div>'} />, container)
+    render(<DOMParserReact source={'<div class="html">html text</div>'} />, container)
   })
 
   expect(container!.innerHTML).toBe('<div class="html">html text</div>')
 
   act(() => {
-    render(<DomParserReact source="<div>html text 2" />, container)
+    render(<DOMParserReact source="<div>html text 2" />, container)
   })
 
   expect(container!.innerHTML).toBe('<div>html text 2</div>')
 })
 
-it('renders DOM', () => {
-  const dom = document.createElement('div')
-  dom.textContent = 'dom text'
-  dom.className = 'dom'
-
-  act(() => {
-    render(<DomParserReact source={dom} />, container)
-  })
-
-  expect(container!.innerHTML).toBe('<div class="dom">dom text</div>')
-})
-
 it('renders styles', () => {
   act(() => {
-    render(<DomParserReact source={'<div style="padding: 10px;"></div>'} />, container)
+    render(<DOMParserReact source={'<div style="padding: 10px;"></div>'} />, container)
   })
 
   expect(container!.innerHTML).toBe('<div style="padding: 10px;"></div>')
@@ -58,7 +48,7 @@ it('renders styles', () => {
 
 it('renders input list', () => {
   act(() => {
-    render(<DomParserReact source={'<input list="list" /><datalist id="list"></datalist>'} />, container)
+    render(<DOMParserReact source={'<input list="list" /><datalist id="list"></datalist>'} />, container)
   })
 
   expect(container!.innerHTML).toBe('<input list="list"><datalist id="list"></datalist>')
@@ -66,7 +56,7 @@ it('renders input list', () => {
 
 it('renders a ref', () => {
   act(() => {
-    render(<DomParserReact source={'<a href="./link">link</a>'} />, container)
+    render(<DOMParserReact source={'<a href="./link">link</a>'} />, container)
   })
 
   expect(container!.innerHTML).toBe('<a href="./link">link</a>')
@@ -74,7 +64,7 @@ it('renders a ref', () => {
 
 it('renders boolean value', () => {
   act(() => {
-    render(<DomParserReact source={'<input readonly checked />'} />, container)
+    render(<DOMParserReact source={'<input readonly checked />'} />, container)
   })
 
   expect(container!.innerHTML).toBe('<input readonly="" checked="">')
@@ -92,7 +82,7 @@ it('renders components', () => {
   }
 
   act(() => {
-    render(<DomParserReact source={source} components={components} />, container)
+    render(<DOMParserReact source={source} components={components} />, container)
   })
 
   expect(container!.innerHTML).toBe(
@@ -108,7 +98,7 @@ it('renders svg text', () => {
 `.trim()
 
   act(() => {
-    render(<DomParserReact source={svg} />, container)
+    render(<DOMParserReact source={svg} />, container)
   })
 
   expect(container!.innerHTML).toBe(svg)

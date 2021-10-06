@@ -5,40 +5,33 @@ import buble from '@rollup/plugin-buble'
 import replace from '@rollup/plugin-replace'
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
+import browserPackages from './browser/package.json'
 import rootPackages from './package.json'
-import serverPackages from './server/package.json'
 
-const toUpperCamelCase = (str) =>
-  str.replace(/(?:^|-)([a-z])/g, (_, char) => char.toUpperCase())
+const globalName = 'DOMParserReact'
 
 const globals = {
   'react': 'React',
-  'jsdom': 'JSDOM',
 }
 
-export default [{
+/** @type {import('rollup').RollupOptions} */
+const baseConfig = {
   input: './src/index.tsx',
+  treeshake: 'smallest',
   plugins: [
     typescript(),
     buble(),
   ],
-  external: Object.keys(globals),
+  external: Object.keys({
+    ...rootPackages.dependencies,
+    ...rootPackages.peerDependencies,
+  }),
+}
+
+/** @type {import('rollup').RollupOptions} */
+const nodeConfig = {
+  ...baseConfig,
   output: [{
-    format: 'iife',
-    file: `dist/${rootPackages.name}.js`,
-    name: toUpperCamelCase(rootPackages.name),
-    exports: 'named',
-    globals,
-  }, {
-    format: 'iife',
-    file: `dist/${rootPackages.name}.min.js`,
-    name: toUpperCamelCase(rootPackages.name),
-    exports: 'named',
-    globals,
-    plugins: [
-      terser(),
-    ],
-  }, {
     format: 'cjs',
     file: rootPackages.main,
     exports: 'named',
@@ -46,36 +39,42 @@ export default [{
     format: 'es',
     file: rootPackages.module,
   }],
-}, {
-  input: './src/server.ts',
+}
+
+/** @type {import('rollup').RollupOptions} */
+const browserConfig = {
+  ...baseConfig,
   plugins: [
-    typescript(),
-    buble(),
+    ...baseConfig.plugins,
     replace({
       preventAssignment: true,
-      values: { 'process.env.TARGET': JSON.stringify('node') },
+      values: { 'typeof DOMParser': JSON.stringify('function') },
     }),
   ],
-  external: Object.keys(globals),
   output: [{
+    format: 'iife',
+    file: `dist/${rootPackages.name}.js`,
+    name: globalName,
+    exports: 'named',
+    globals,
+  }, {
+    format: 'iife',
+    file: `dist/${rootPackages.name}.min.js`,
+    name: globalName,
+    exports: 'named',
+    globals,
+    plugins: [
+      terser(),
+    ],
+  }, {
     format: 'cjs',
-    file: join('server', serverPackages.main),
+    file: join('browser', browserPackages.main),
+    exports: 'named',
+  }, {
+    format: 'es',
+    file: join('browser', browserPackages.module),
     exports: 'named',
   }],
-}, {
-  input: './src/server.ts',
-  plugins: [
-    typescript(),
-    buble(),
-    replace({
-      preventAssignment: true,
-      values: { 'process.env.TARGET': JSON.stringify('browser') },
-    }),
-  ],
-  external: Object.keys(globals),
-  output: [{
-    format: 'cjs',
-    file: join('server', serverPackages.browser),
-    exports: 'named',
-  }],
-}]
+}
+
+export default [nodeConfig, browserConfig]

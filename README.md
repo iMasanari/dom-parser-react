@@ -1,4 +1,4 @@
-# DomParserReact
+# DOMParserReact
 
 A small parser that converts HTML to React using the DOMParser API.
 
@@ -6,11 +6,11 @@ A small parser that converts HTML to React using the DOMParser API.
 
 ```jsx
 import React from 'react'
-import DomParserReact, { parse } from 'dom-parser-react'
+import DOMParserReact, { parse } from 'dom-parser-react'
 // import { renderToStaticMarkup as render } from 'react-dom/server'
 
 const App = () =>
-  <DomParserReact source="<h1>HTML Text</h1>" />
+  <DOMParserReact source="<h1>HTML Text</h1>" />
 
 render(<App />) // `<h1>HTML Text</h1>`
 
@@ -29,7 +29,7 @@ render(<>{contents}</>) // `<h1>HTML Text</h1>`
 
 ```jsx
 import React from 'react'
-import DomParserReact from 'dom-parser-react'
+import DOMParserReact from 'dom-parser-react'
 // import { renderToStaticMarkup as render } from 'react-dom/server'
 
 const Title = (props) =>
@@ -38,22 +38,7 @@ const Title = (props) =>
   </div>
 
 const App = () =>
-  <DomParserReact source="<h1>HTML Text</h1>" components={{ h1: Title }} />
+  <DOMParserReact source="<h1>HTML Text</h1>" components={{ h1: Title }} />
 
 render(<App />) // `<div class="title"><h1>HTML Text</h1></div>`
-```
-
-## Universal JavaScript (Browser & Node.js)
-
-```jsx
-import React from 'react'
-import DomParserReact from 'dom-parser-react'
-import { createDom } from 'dom-parser-react/server'
-
-const htmlText = '<h1>HTML Text</h1>'
-
-const App = () =>
-  <DomParserReact
-    source={typeof window === 'object' ? htmlText : createDom(htmlText)}
-  />
 ```
