@@ -12,7 +12,7 @@ export const parseStyle = (inlineStyle: string) => {
 
     if (!token) continue
 
-    // comment
+    // comment mode
     if (modeToken === '/*') {
       if (token === '*/') {
         modeToken = null
@@ -21,6 +21,7 @@ export const parseStyle = (inlineStyle: string) => {
       continue
     }
 
+    // escaped token
     if (isEscape) {
       value += token
       isEscape = false
@@ -30,7 +31,7 @@ export const parseStyle = (inlineStyle: string) => {
 
     isEscape = token === '\\'
 
-    // quotation
+    // css string value mode (quotation)
     if (modeToken) {
       value += token
 
@@ -41,35 +42,40 @@ export const parseStyle = (inlineStyle: string) => {
       continue
     }
 
-    switch (token) {
-      case ':':
-        property = value.trim()
-          .replace(/^-ms-/, 'ms-')
-          .replace(/-(.)/g, (_, char) => char.toUpperCase())
+    if (token === ':') {
+      property = value.trim()
+        .replace(/^-ms-/, 'ms-')
+        .replace(/-(.)/g, (_, char) => char.toUpperCase())
 
-        value = ''
+      value = ''
 
-        break
-      case ';':
-        style[property] = value.trim()
-
-        property = ''
-        value = ''
-
-        break
-      case '\'':
-      case '"':
-        value += token
-        modeToken = token
-
-        break
-      case '/*':
-        modeToken = token
-
-        break
-      default:
-        value += token
+      continue
     }
+
+    if (token === ';') {
+      style[property] = value.trim()
+
+      property = ''
+      value = ''
+
+      continue
+    }
+
+    if (token === '\'' || token === '"') {
+      value += token
+      modeToken = token
+
+      continue
+    }
+
+    if (token === '/*') {
+      modeToken = token
+
+      continue
+    }
+
+    // other token
+    value += token
   }
 
   value = value.trim()
