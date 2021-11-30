@@ -5,7 +5,6 @@ export { parse, DOMParserReactOptions }
 
 export interface DOMParserReactProps {
   source: string
-  parser?: (source: string) => Node
   createElement?: typeof createElement
   Fragment?: ComponentType | string
   components?: Record<string, ComponentType<any>>

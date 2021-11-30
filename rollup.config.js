@@ -6,13 +6,15 @@ import replace from '@rollup/plugin-replace'
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
 import browserPackages from './browser/package.json'
-import rootPackages from './package.json'
+import packages from './package.json'
 
 const globalName = 'DOMParserReact'
 
 const globals = {
   'react': 'React',
 }
+
+const banner = `/*! ${packages.name} v${packages.version} @license ${packages.license} */`
 
 /** @type {import('rollup').RollupOptions} */
 const baseConfig = {
@@ -23,8 +25,8 @@ const baseConfig = {
     buble(),
   ],
   external: Object.keys({
-    ...rootPackages.dependencies,
-    ...rootPackages.peerDependencies,
+    ...packages.dependencies,
+    ...packages.peerDependencies,
   }),
 }
 
@@ -33,11 +35,13 @@ const nodeConfig = {
   ...baseConfig,
   output: [{
     format: 'cjs',
-    file: rootPackages.main,
+    file: packages.main,
     exports: 'named',
+    banner,
   }, {
     format: 'es',
-    file: rootPackages.module,
+    file: packages.module,
+    banner,
   }],
 }
 
@@ -53,27 +57,31 @@ const browserConfig = {
   ],
   output: [{
     format: 'iife',
-    file: `dist/${rootPackages.name}.js`,
+    file: `dist/${packages.name}.js`,
     name: globalName,
     exports: 'named',
     globals,
+    banner,
   }, {
     format: 'iife',
-    file: `dist/${rootPackages.name}.min.js`,
+    file: `dist/${packages.name}.min.js`,
     name: globalName,
     exports: 'named',
     globals,
     plugins: [
       terser(),
     ],
+    banner,
   }, {
     format: 'cjs',
     file: join('browser', browserPackages.main),
     exports: 'named',
+    banner,
   }, {
     format: 'es',
     file: join('browser', browserPackages.module),
     exports: 'named',
+    banner,
   }],
 }
 

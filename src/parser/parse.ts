@@ -22,15 +22,20 @@ export const parse = (source: string, options: DOMParserReactOptions): JSX.Eleme
 }
 
 const transform = (node: Node | RootFragment, options: DOMParserReactOptions): JSX.Element | string | null => {
-  switch (node.nodeType) {
-    case ELEMENT_NODE:
-      return element(node as HTMLElement, options)
-    case DOCUMENT_NODE:
-    case DOCUMENT_FRAGMENT_NODE:
-      return root(node as RootFragment, options)
-    case TEXT_NODE:
-      return text(node as Text)
+  const nodeType = node.nodeType
+
+  if (nodeType === ELEMENT_NODE) {
+    return element(node as HTMLElement, options)
   }
+
+  if (nodeType === DOCUMENT_NODE || nodeType === DOCUMENT_FRAGMENT_NODE) {
+    return root(node as RootFragment, options)
+  }
+
+  if (nodeType === TEXT_NODE) {
+    return text(node as Text)
+  }
+
   return null
 }
 
