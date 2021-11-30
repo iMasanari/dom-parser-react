@@ -1,6 +1,6 @@
 {
   "name": "dom-parser-react",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A small parser that converts HTML to React using the DOMParser API.",
   "main": "dist/dom-parser-react.cjs.js",
   "module": "dist/dom-parser-react.esm.js",
