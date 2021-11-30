@@ -9,6 +9,10 @@ it('escape and quotes', () => {
     fontFamily: '\'I\\\'m\'',
   })
 
+  expect(parseStyle('font-family: "\\\\";')).toStrictEqual({
+    fontFamily: '"\\\\"',
+  })
+
   expect(parseStyle('font-family: "/*", "*/"')).toStrictEqual({
     fontFamily: '"/*", "*/"',
   })

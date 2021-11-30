@@ -23,7 +23,7 @@ export const parseStyle = (inlineStyle: string) => {
 
     if (isEscape) {
       value += token
-      isEscape = true
+      isEscape = false
 
       continue
     }
