@@ -1,38 +1,49 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment jest-environment-jsdom
  */
 
 import { createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import { createRoot, Root } from 'react-dom/client'
 import { act } from 'react-dom/test-utils'
 import DOMParserReact from '../src'
 
 jest.mock('jsdom', () => ({ JSDOM: undefined }))
 
-let container: HTMLDivElement | null = null
+declare global {
+  interface Window {
+    IS_REACT_ACT_ENVIRONMENT: unknown
+  }
+}
+
+window.IS_REACT_ACT_ENVIRONMENT = true
+
+let container: HTMLDivElement = null!
+let root: Root = null!
 
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement('div')
   document.body.appendChild(container)
+  root = createRoot(container!)
 })
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container!)
+  act(() => root.unmount())
+  root = null!
   container!.remove()
-  container = null
+  container = null!
 })
 
 it('renders html text', () => {
   act(() => {
-    render(<DOMParserReact source={'<div class="html">html text</div>'} />, container)
+    root.render(<DOMParserReact source={'<div class="html">html text</div>'} />)
   })
 
   expect(container!.innerHTML).toBe('<div class="html">html text</div>')
 
   act(() => {
-    render(<DOMParserReact source="<div>html text 2" />, container)
+    root.render(<DOMParserReact source="<div>html text 2" />)
   })
 
   expect(container!.innerHTML).toBe('<div>html text 2</div>')
@@ -40,7 +51,7 @@ it('renders html text', () => {
 
 it('renders styles', () => {
   act(() => {
-    render(<DOMParserReact source={'<div style="padding: 10px;"></div>'} />, container)
+    root.render(<DOMParserReact source={'<div style="padding: 10px;"></div>'} />)
   })
 
   expect(container!.innerHTML).toBe('<div style="padding: 10px;"></div>')
@@ -48,7 +59,7 @@ it('renders styles', () => {
 
 it('renders input list', () => {
   act(() => {
-    render(<DOMParserReact source={'<input list="list" /><datalist id="list"></datalist>'} />, container)
+    root.render(<DOMParserReact source={'<input list="list" /><datalist id="list"></datalist>'} />)
   })
 
   expect(container!.innerHTML).toBe('<input list="list"><datalist id="list"></datalist>')
@@ -56,7 +67,7 @@ it('renders input list', () => {
 
 it('renders a ref', () => {
   act(() => {
-    render(<DOMParserReact source={'<a href="./link">link</a>'} />, container)
+    root.render(<DOMParserReact source={'<a href="./link">link</a>'} />)
   })
 
   expect(container!.innerHTML).toBe('<a href="./link">link</a>')
@@ -64,7 +75,7 @@ it('renders a ref', () => {
 
 it('renders boolean value', () => {
   act(() => {
-    render(<DOMParserReact source={'<input readonly checked />'} />, container)
+    root.render(<DOMParserReact source="<input readonly checked />" />)
   })
 
   expect(container!.innerHTML).toBe('<input readonly="" checked="">')
@@ -82,7 +93,7 @@ it('renders components', () => {
   }
 
   act(() => {
-    render(<DOMParserReact source={source} components={components} />, container)
+    root.render(<DOMParserReact source={source} components={components} />)
   })
 
   expect(container!.innerHTML).toBe(
@@ -98,7 +109,7 @@ it('renders svg text', () => {
 `.trim()
 
   act(() => {
-    render(<DOMParserReact source={svg} />, container)
+    root.render(<DOMParserReact source={svg} />)
   })
 
   expect(container!.innerHTML).toBe(svg)
