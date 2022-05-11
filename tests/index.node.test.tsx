@@ -12,8 +12,8 @@ it('renders element for server', () => {
 
 it('renders elements for server', () => {
   const markup = renderToStaticMarkup(
-    <DOMParserReact source={'<div>serverside text</div><p>test</p>'} />
+    <DOMParserReact source={'<div class="html">serverside text</div><p>test</p>'} />
   )
 
-  expect(markup).toBe('<div>serverside text</div><p>test</p>')
+  expect(markup).toBe('<div class="html">serverside text</div><p>test</p>')
 })
