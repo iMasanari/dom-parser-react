@@ -82,8 +82,6 @@ it('renders boolean value', () => {
 })
 
 it('renders components', () => {
-  const source = '<div class="text">components</div>'
-
   const components = {
     div: ({ children, ...props }: any) => (
       <div {...props} className={`div ${props.className}`}>
@@ -93,7 +91,7 @@ it('renders components', () => {
   }
 
   act(() => {
-    root.render(<DOMParserReact source={source} components={components} />)
+    root.render(<DOMParserReact source={'<div class="text">components</div>'} components={components} />)
   })
 
   expect(container!.innerHTML).toBe(
