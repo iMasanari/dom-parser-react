@@ -1,12 +1,12 @@
 import { parseStyle } from '../src/parser/style-parser'
 
 it('escape and quotes', () => {
-  expect(parseStyle('font-family: I\'m')).toStrictEqual({
-    fontFamily: 'I\'m',
+  expect(parseStyle("font-family: I'm")).toStrictEqual({
+    fontFamily: "I'm",
   })
 
-  expect(parseStyle('font-family: \'I\\\'m\'')).toStrictEqual({
-    fontFamily: '\'I\\\'m\'',
+  expect(parseStyle("font-family: 'I\\'m'")).toStrictEqual({
+    fontFamily: "'I\\'m'",
   })
 
   expect(parseStyle('font-family: "\\\\";')).toStrictEqual({

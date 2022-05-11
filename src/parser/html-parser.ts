@@ -15,8 +15,8 @@ export const htmlParser = (source: string): Node | RootFragment => {
       : new (new JSDOM().window).DOMParser
   }
 
-  const dom = parser.parseFromString(`<!doctype html><body>${source}`, 'text/html')
-  const nodes = dom.body.childNodes
+  const dom = parser.parseFromString(`<!doctype html><body><template>${source}`, 'text/html')
+  const nodes = (dom.body.firstChild as HTMLTemplateElement).content.childNodes
 
   return nodes.length === 1
     ? nodes[0]

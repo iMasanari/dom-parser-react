@@ -19,7 +19,9 @@ const banner = `/*! ${packages.name} v${packages.version} @license ${packages.li
 /** @type {import('rollup').RollupOptions} */
 const baseConfig = {
   input: './src/index.tsx',
-  treeshake: 'smallest',
+  treeshake: {
+    moduleSideEffects: false,
+  },
   plugins: [
     typescript(),
     buble(),
