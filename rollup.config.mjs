@@ -1,12 +1,10 @@
 // @ts-check
 
 import { join } from 'path'
-import buble from '@rollup/plugin-buble'
 import replace from '@rollup/plugin-replace'
-import typescript from '@rollup/plugin-typescript'
-import { terser } from 'rollup-plugin-terser'
-import browserPackages from './browser/package.json'
-import packages from './package.json'
+import esbuild, { minify } from 'rollup-plugin-esbuild'
+import browserPackages from './browser/package.json' assert { type: 'json' }
+import packages from './package.json' assert { type: 'json' }
 
 const globalName = 'DOMParserReact'
 
@@ -23,8 +21,7 @@ const baseConfig = {
     moduleSideEffects: false,
   },
   plugins: [
-    typescript(),
-    buble(),
+    esbuild(),
   ],
   external: Object.keys({
     ...packages.dependencies,
@@ -51,6 +48,7 @@ const nodeConfig = {
 const browserConfig = {
   ...baseConfig,
   plugins: [
+    // @ts-expect-error
     ...baseConfig.plugins,
     replace({
       preventAssignment: true,
@@ -71,7 +69,7 @@ const browserConfig = {
     exports: 'named',
     globals,
     plugins: [
-      terser(),
+      minify(),
     ],
     banner,
   }, {
