@@ -43,18 +43,25 @@
   ],
   "author": "iMasanari",
   "license": "MIT",
-  "dependencies": {
-    "jsdom": "^21.0.0"
-  },
   "peerDependencies": {
     "@types/react": ">= 16",
+    "jsdom": "^21.0.0",
     "react": ">= 16"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "jsdom": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
     "@types/jsdom": "^20.0.1",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "jsdom": "^21.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rollup": "^3.10.1",
