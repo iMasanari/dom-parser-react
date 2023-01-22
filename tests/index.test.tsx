@@ -1,13 +1,12 @@
-/**
- * @jest-environment jest-environment-jsdom
- */
+// @vitest-environment jsdom
 
 import { createElement } from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { act } from 'react-dom/test-utils'
+import { expect, it, vi, beforeEach, afterEach } from 'vitest'
 import DOMParserReact from '../src'
 
-jest.mock('jsdom', () => ({ JSDOM: undefined }))
+vi.mock('jsdom', () => ({ JSDOM: undefined }))
 
 declare global {
   interface Window {

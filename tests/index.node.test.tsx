@@ -1,5 +1,6 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { expect, it } from 'vitest'
 import DOMParserReact from '../src'
 
 it('renders element for server', () => {

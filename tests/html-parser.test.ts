@@ -1,11 +1,10 @@
-/**
- * @jest-environment jest-environment-jsdom
- */
+// @vitest-environment jsdom
 
-import { ELEMENT_NODE, DOCUMENT_FRAGMENT_NODE, TEXT_NODE } from '../src/constants/node-type'
+import { expect, it, vi } from 'vitest'
+import { DOCUMENT_FRAGMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../src/constants/node-type'
 import { htmlParser } from '../src/parser/html-parser'
 
-jest.mock('jsdom', () => ({ JSDOM: undefined }))
+vi.mock('jsdom', () => ({ JSDOM: undefined }))
 
 it('parse a element', () => {
   const node = htmlParser('<div>test</div>') as Node

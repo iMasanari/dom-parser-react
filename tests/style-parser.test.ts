@@ -1,3 +1,4 @@
+import { expect, it } from 'vitest'
 import { parseStyle } from '../src/parser/style-parser'
 
 it('escape and quotes', () => {
