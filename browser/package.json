@@ -1,5 +1,6 @@
 {
-  "main": "../dist/dom-parser-react.browser.cjs.js",
-  "module": "../dist/dom-parser-react.browser.esm.js",
+  "type": "module",
+  "main": "../dist/dom-parser-react.browser.cjs",
+  "module": "../dist/dom-parser-react.browser.js",
   "types": "../dist/types/index.d.ts"
 }

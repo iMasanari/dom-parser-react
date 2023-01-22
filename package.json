@@ -2,10 +2,24 @@
   "name": "dom-parser-react",
   "version": "0.2.2",
   "description": "A small parser that converts HTML to React using the DOMParser API.",
-  "main": "dist/dom-parser-react.cjs.js",
-  "module": "dist/dom-parser-react.esm.js",
+  "type": "module",
+  "main": "./dist/dom-parser-react.jsdom.cjs",
   "browser": "./browser/",
-  "types": "dist/types/index.d.ts",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "browser": {
+        "require": "./dist/dom-parser-react.browser.cjs",
+        "default": "./dist/dom-parser-react.browser.js"
+      },
+      "require": "./dist/dom-parser-react.jsdom.cjs",
+      "default": "./dist/dom-parser-react.jsdom.js"
+    },
+    "./browser": {
+      "require": "./dist/dom-parser-react.browser.cjs",
+      "default": "./dist/dom-parser-react.browser.js"
+    }
+  },
   "files": [
     "dist",
     "browser"

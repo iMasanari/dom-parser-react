@@ -1,9 +1,7 @@
 // @ts-check
 
-import { join } from 'path'
 import replace from '@rollup/plugin-replace'
 import esbuild, { minify } from 'rollup-plugin-esbuild'
-import browserPackages from './browser/package.json' assert { type: 'json' }
 import packages from './package.json' assert { type: 'json' }
 
 const globalName = 'DOMParserReact'
@@ -34,12 +32,12 @@ const nodeConfig = {
   ...baseConfig,
   output: [{
     format: 'cjs',
-    file: packages.main,
+    file: packages.exports['.'].require,
     exports: 'named',
     banner,
   }, {
     format: 'es',
-    file: packages.module,
+    file: packages.exports['.'].default,
     banner,
   }],
 }
@@ -74,12 +72,12 @@ const browserConfig = {
     banner,
   }, {
     format: 'cjs',
-    file: join('browser', browserPackages.main),
+    file: packages.exports['.'].browser.require,
     exports: 'named',
     banner,
   }, {
     format: 'es',
-    file: join('browser', browserPackages.module),
+    file: packages.exports['.'].browser.default,
     exports: 'named',
     banner,
   }],
