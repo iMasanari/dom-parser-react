@@ -1,6 +1,19 @@
+[![npm version](https://badge.fury.io/js/dom-parser-react.svg)](https://badge.fury.io/js/dom-parser-react)
+[![Tests](https://github.com/iMasanari/dom-parser-react/actions/workflows/tests.yml/badge.svg)](https://github.com/iMasanari/dom-parser-react/actions/workflows/tests.yml)
+
 # DOMParserReact
 
 A small parser that converts HTML to React using the DOMParser API.
+
+## Install
+
+```bash
+npm i dom-parser-react react
+# or
+yarn add dom-parser-react react
+```
+
+For use with Node.js (e.g., SSR / SSG), install `jsdom` additionally.
 
 ## Usage
 
