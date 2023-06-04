@@ -1,6 +1,7 @@
 // @ts-check
 
 import replace from '@rollup/plugin-replace'
+import dts from 'rollup-plugin-dts'
 import esbuild, { minify } from 'rollup-plugin-esbuild'
 import packages from './package.json' assert { type: 'json' }
 
@@ -83,4 +84,16 @@ const browserConfig = {
   }],
 }
 
-export default [nodeConfig, browserConfig]
+/** @type {import('rollup').RollupOptions} */
+const dtsConfig = {
+  ...baseConfig,
+  plugins: [
+    dts(),
+  ],
+  output: [{
+    format: 'es',
+    file: packages.types,
+    banner,
+  }],
+}
+export default [nodeConfig, browserConfig, dtsConfig]
