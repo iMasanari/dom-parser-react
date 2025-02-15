@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
 
-import { createElement } from 'react'
+import React, { act } from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { act } from 'react-dom/test-utils'
-import { expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import DOMParserReact from '../src'
 
 vi.mock('jsdom', () => ({ JSDOM: undefined }))
@@ -36,7 +35,7 @@ afterEach(() => {
 
 it('renders html text', () => {
   act(() => {
-    root.render(<DOMParserReact source={'<div class="html">html text</div>'} />)
+    root.render(<DOMParserReact source='<div class="html">html text</div>' />)
   })
 
   expect(container!.innerHTML).toBe('<div class="html">html text</div>')
@@ -50,7 +49,7 @@ it('renders html text', () => {
 
 it('renders styles', () => {
   act(() => {
-    root.render(<DOMParserReact source={'<div style="padding: 10px;"></div>'} />)
+    root.render(<DOMParserReact source='<div style="padding: 10px;"></div>' />)
   })
 
   expect(container!.innerHTML).toBe('<div style="padding: 10px;"></div>')
@@ -58,7 +57,7 @@ it('renders styles', () => {
 
 it('renders input list', () => {
   act(() => {
-    root.render(<DOMParserReact source={'<input list="list" /><datalist id="list"></datalist>'} />)
+    root.render(<DOMParserReact source='<input list="list" /><datalist id="list"></datalist>' />)
   })
 
   expect(container!.innerHTML).toBe('<input list="list"><datalist id="list"></datalist>')
@@ -66,7 +65,7 @@ it('renders input list', () => {
 
 it('renders a ref', () => {
   act(() => {
-    root.render(<DOMParserReact source={'<a href="./link">link</a>'} />)
+    root.render(<DOMParserReact source='<a href="./link">link</a>' />)
   })
 
   expect(container!.innerHTML).toBe('<a href="./link">link</a>')
@@ -90,7 +89,7 @@ it('renders components', () => {
   }
 
   act(() => {
-    root.render(<DOMParserReact source={'<div class="text">components</div>'} components={components} />)
+    root.render(<DOMParserReact source='<div class="text">components</div>' components={components} />)
   })
 
   expect(container!.innerHTML).toBe(

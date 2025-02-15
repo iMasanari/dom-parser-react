@@ -1,4 +1,4 @@
-import { ComponentType, createElement } from 'react'
+import { ComponentType, JSX, createElement } from 'react'
 import { DOCUMENT_FRAGMENT_NODE, DOCUMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../constants/node-type'
 import { HTML_NAMESPACE } from '../constants/web-namespace'
 import { htmlParser, RootFragment } from './html-parser'

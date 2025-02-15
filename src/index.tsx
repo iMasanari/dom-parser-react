@@ -1,4 +1,4 @@
-import { ComponentType, createElement, Fragment as ReactFragment, useMemo } from 'react'
+import React, { ComponentType, createElement, Fragment as ReactFragment, useMemo } from 'react'
 import { parse, type DOMParserReactOptions } from './parser/parse'
 
 export { parse, DOMParserReactOptions }

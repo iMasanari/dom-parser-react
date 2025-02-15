@@ -68,9 +68,8 @@ const browserConfig = {
     exports: 'named',
     globals,
     plugins: [
-      minify(),
+      minify({ banner }),
     ],
-    banner,
   }, {
     format: 'cjs',
     file: packages.exports['.'].browser.require,
