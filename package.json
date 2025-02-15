@@ -9,13 +9,16 @@
   "exports": {
     ".": {
       "browser": {
+        "types": "./dist/dom-parser-react.d.ts",
         "require": "./dist/dom-parser-react.browser.cjs",
         "default": "./dist/dom-parser-react.browser.js"
       },
+      "types": "./dist/dom-parser-react.d.ts",
       "require": "./dist/dom-parser-react.jsdom.cjs",
       "default": "./dist/dom-parser-react.jsdom.js"
     },
     "./browser": {
+      "types": "./dist/dom-parser-react.d.ts",
       "require": "./dist/dom-parser-react.browser.cjs",
       "default": "./dist/dom-parser-react.browser.js"
     }
