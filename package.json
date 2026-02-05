@@ -61,17 +61,17 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@rollup/plugin-replace": "^6.0.2",
-    "@types/jsdom": "^21.1.7",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "jsdom": "^26.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "rollup": "^4.34.7",
-    "rollup-plugin-dts": "^6.1.1",
-    "rollup-plugin-esbuild": "^6.2.0",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "@rollup/plugin-replace": "^6.0.3",
+    "@types/jsdom": "^27.0.0",
+    "@types/react": "^19.2.11",
+    "@types/react-dom": "^19.2.3",
+    "jsdom": "^28.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "rollup": "^4.57.1",
+    "rollup-plugin-dts": "^6.3.0",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
