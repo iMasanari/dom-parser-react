@@ -6,6 +6,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import DOMParserReact from '../src'
 
 vi.mock('jsdom', () => ({ JSDOM: undefined }))
+vi.stubGlobal('__BROWSER__', true)
 
 declare global {
   interface Window {

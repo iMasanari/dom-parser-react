@@ -8,6 +8,7 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "jsx": "react",
     "outDir": "dist/",
     "declaration": true,

@@ -10,7 +10,7 @@ let parser: DOMParser | undefined
 
 export const htmlParser = (source: string): Node | RootFragment => {
   if (!parser) {
-    parser = typeof DOMParser === 'function'
+    parser = __BROWSER__ || typeof DOMParser === 'function'
       ? new DOMParser
       : new (new JSDOM().window).DOMParser
   }

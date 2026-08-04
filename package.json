@@ -3,24 +3,22 @@
   "version": "0.3.2",
   "description": "A small parser that converts HTML to React using the DOMParser API.",
   "type": "module",
-  "main": "./dist/dom-parser-react.jsdom.cjs",
+  "main": "./dist/dom-parser-react.cjs",
+  "module": "./dist/dom-parser-react.mjs",
+  "types": "./dist/dom-parser-react.d.cts",
   "browser": "./browser/",
-  "types": "./dist/dom-parser-react.d.ts",
   "exports": {
     ".": {
       "browser": {
-        "types": "./dist/dom-parser-react.d.ts",
-        "require": "./dist/dom-parser-react.browser.cjs",
-        "default": "./dist/dom-parser-react.browser.js"
+        "import": "./dist/dom-parser-react.browser.mjs",
+        "require": "./dist/dom-parser-react.browser.cjs"
       },
-      "types": "./dist/dom-parser-react.d.ts",
-      "require": "./dist/dom-parser-react.jsdom.cjs",
-      "default": "./dist/dom-parser-react.jsdom.js"
+      "import": "./dist/dom-parser-react.mjs",
+      "require": "./dist/dom-parser-react.cjs"
     },
     "./browser": {
-      "types": "./dist/dom-parser-react.d.ts",
-      "require": "./dist/dom-parser-react.browser.cjs",
-      "default": "./dist/dom-parser-react.browser.js"
+      "import": "./dist/dom-parser-react.browser.mjs",
+      "require": "./dist/dom-parser-react.browser.cjs"
     }
   },
   "files": [
@@ -28,7 +26,7 @@
     "browser"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "tsdown",
     "test": "npm run test:tsc && npm run test:vitest",
     "test:tsc": "tsc -p . --noEmit",
     "test:vitest": "vitest run"
@@ -61,16 +59,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@rollup/plugin-replace": "^6.0.3",
     "@types/jsdom": "^27.0.0",
     "@types/react": "^19.2.11",
     "@types/react-dom": "^19.2.3",
     "jsdom": "^28.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "rollup": "^4.57.1",
-    "rollup-plugin-dts": "^6.3.0",
-    "rollup-plugin-esbuild": "^6.2.1",
+    "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   }

@@ -1,7 +1,9 @@
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { expect, it } from 'vitest'
+import { expect, it, vi } from 'vitest'
 import DOMParserReact from '../src'
+
+vi.stubGlobal('__BROWSER__', false)
 
 it('renders element for server', () => {
   const markup = renderToStaticMarkup(
