@@ -8,7 +8,7 @@ vi.mock('jsdom', () => ({ JSDOM: undefined }))
 vi.stubGlobal('__BROWSER__', true)
 
 it('parse a element', () => {
-  const node = htmlParser('<div>test</div>') as Node
+  const node = htmlParser('<div>test</div>', undefined) as Node
 
   expect(node.nodeType).toStrictEqual(ELEMENT_NODE)
   expect(node.nodeName.toLowerCase()).toStrictEqual('div')
@@ -19,7 +19,7 @@ it('parse a element', () => {
 })
 
 it('parse elements', () => {
-  const node = htmlParser('<div>1</div><span>2</span>')
+  const node = htmlParser('<div>1</div><span>2</span>', undefined)
 
   expect(node.nodeType).toStrictEqual(DOCUMENT_FRAGMENT_NODE)
   expect(node.childNodes.length).toStrictEqual(2)
@@ -40,7 +40,7 @@ it('parse elements', () => {
 })
 
 it('table parts contents', () => {
-  const node = htmlParser('<td>table data</td>') as Node
+  const node = htmlParser('<td>table data</td>', undefined) as Node
 
   expect(node.nodeType).toStrictEqual(ELEMENT_NODE)
   expect(node.nodeName.toLowerCase()).toStrictEqual('td')
@@ -48,4 +48,16 @@ it('table parts contents', () => {
   expect(node.childNodes.length).toStrictEqual(1)
   expect(node.childNodes[0].nodeType).toStrictEqual(TEXT_NODE)
   expect(node.childNodes[0].nodeValue).toStrictEqual('table data')
+})
+
+it('custom parser', () => {
+  const parser = vi.fn(() => new DOMParser().parseFromString('<!doctype html><body><template><div>test</div>', 'text/html'))
+  const node = htmlParser('<div>test</div>', parser) as Node
+
+  expect(node.childNodes.length).toStrictEqual(1)
+  expect(node.childNodes[0].nodeType).toStrictEqual(TEXT_NODE)
+  expect(node.childNodes[0].nodeValue).toStrictEqual('test')
+
+  expect(parser).toHaveBeenCalledTimes(1)
+  expect(parser).toHaveBeenCalledWith('<!doctype html><body><template><div>test</div>')
 })

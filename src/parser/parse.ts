@@ -13,10 +13,11 @@ export interface DOMParserReactOptions {
   createElement: typeof createElement
   Fragment: ComponentType | string
   components?: Record<string, ComponentType<any>>
+  domParser?: (source: string) => Document
 }
 
 export const parse = (source: string, options: DOMParserReactOptions): JSX.Element | string | null => {
-  const dom = htmlParser(source)
+  const dom = htmlParser(source, options.domParser)
 
   return transform(dom, options)
 }

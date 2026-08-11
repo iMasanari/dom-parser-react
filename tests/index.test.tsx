@@ -111,3 +111,18 @@ it('renders svg text', () => {
 
   expect(container!.innerHTML).toBe(svg)
 })
+
+it('renders with parser', () => {
+  const parser = vi.fn(() =>
+    new DOMParser().parseFromString('<!doctype html><body><template><div data-parser="true">html text</div>', 'text/html')
+  )
+
+  act(() => {
+    root.render(<DOMParserReact source="<div>html text</div>" domParser={parser} />)
+  })
+
+  expect(container!.innerHTML).toBe('<div data-parser="true">html text</div>')
+
+  expect(parser).toHaveBeenCalledTimes(1)
+  expect(parser).toHaveBeenCalledWith('<!doctype html><body><template><div>html text</div>')
+})

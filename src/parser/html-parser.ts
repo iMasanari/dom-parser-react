@@ -8,14 +8,16 @@ export interface RootFragment {
 
 let parser: DOMParser | undefined
 
-export const htmlParser = (source: string): Node | RootFragment => {
-  if (!parser) {
-    parser = __BROWSER__ || typeof DOMParser === 'function'
-      ? new DOMParser
-      : new (new JSDOM().window).DOMParser
-  }
+const defaultParse = (source: string) => {
+  parser ??= __BROWSER__ || typeof DOMParser === 'function'
+    ? new DOMParser
+    : new (new JSDOM().window).DOMParser
 
-  const dom = parser.parseFromString(`<!doctype html><body><template>${source}`, 'text/html')
+  return parser.parseFromString(source, 'text/html')
+}
+
+export const htmlParser = (source: string, parse: ((source: string) => Document) | undefined): Node | RootFragment => {
+  const dom = (parse ?? defaultParse)(`<!doctype html><body><template>${source}`)
   const nodes = (dom.body.firstChild as HTMLTemplateElement).content.childNodes
 
   return nodes.length === 1

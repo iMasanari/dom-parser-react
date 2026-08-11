@@ -1,28 +1,25 @@
-import { ComponentType, createElement as ReactCreateElement, Fragment as ReactFragment, useMemo } from 'react'
+import { createElement as ReactCreateElement, Fragment as ReactFragment, useMemo } from 'react'
 import { parse, type DOMParserReactOptions } from './parser/parse'
 
-export { parse, DOMParserReactOptions }
+export { DOMParserReactOptions, parse }
 
-export interface DOMParserReactProps {
+export interface DOMParserReactProps extends Partial<DOMParserReactOptions> {
   source: string
-  createElement?: typeof ReactCreateElement
-  Fragment?: ComponentType | string
-  components?: Record<string, ComponentType<any>>
   deps?: unknown[]
 }
 
-export default function DOMParserReact(props: DOMParserReactProps) {
-  const createElement = props.createElement || ReactCreateElement
-  const Fragment = props.Fragment || ReactFragment
+export default function DOMParserReact({ source, deps, ...options }: DOMParserReactProps) {
+  const createElement = options.createElement || ReactCreateElement
+  const Fragment = options.Fragment || ReactFragment
 
   const element = useMemo(() => (
-    parse(props.source, {
+    parse(source, {
+      ...options,
       createElement,
       Fragment,
-      components: props.components,
     })
     // eslint-disable-next-line
-  ), props.deps || [props.source])
+  ), deps || [source])
 
   return typeof element === 'string' ? /* @__PURE__ */ createElement(Fragment, null, element) : element
 }
