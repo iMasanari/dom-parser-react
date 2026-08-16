@@ -9,6 +9,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "paths": {
+      "dom-parser-react/window": [
+        "./src/window.node.ts"
+      ]
+    },
     "jsx": "react",
     "outDir": "dist/",
     "declaration": true,

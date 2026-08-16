@@ -4,7 +4,6 @@ import { expect, it, vi } from 'vitest'
 import { DOCUMENT_FRAGMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../src/constants/node-type'
 import { htmlParser } from '../src/parser/html-parser'
 
-vi.mock('jsdom', () => ({ JSDOM: undefined }))
 vi.stubGlobal('__BROWSER__', true)
 
 it('parse a element', () => {

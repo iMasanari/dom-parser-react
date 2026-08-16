@@ -1,41 +1,40 @@
-import { defineConfig } from 'tsdown'
+import { defineConfig, type UserConfig } from 'tsdown'
 import packages from './package.json' with { type: 'json' }
 
 declare global {
   const __BROWSER__: boolean
 }
 
-const baseConfig = defineConfig({
+const baseConfig = {
   entry: {
     [packages.name]: 'src/index.ts',
   },
   format: ['es', 'cjs'],
   cjsDefault: false,
   banner: `/*! ${packages.name} v${packages.version} @license ${packages.license} */`,
+  deps: {
+    neverBundle: /^dom-parser-react\//,
+  },
   treeshake: {
     moduleSideEffects: [{ test: /^jsdom$/, sideEffects: false }],
   },
-})
-
+} satisfies UserConfig
 
 export default defineConfig([{
   ...baseConfig,
   entry: {
-    [`${packages.name}.browser`]: 'src/index.ts',
+    ...baseConfig.entry,
+    'window/browser': 'src/window.browser.ts',
+    'window/node': 'src/window.node.ts',
   },
-  define: {
-    __BROWSER__: JSON.stringify(true),
-  },
-}, {
-  ...baseConfig,
   define: {
     __BROWSER__: JSON.stringify(false),
   },
   exports: {
     customExports: (exports) => {
-      const { '.': root, ...rest } = exports
+      const { [`./${packages.name}`]: root, './window/browser': windowBrowser, './window/node': windowNote, ...rest } = exports
       const browser = Object.fromEntries(Object.entries(root as Record<string, string>).map(([k, v]) =>
-        [k, v.replace(packages.name, `${packages.name}.browser`)])
+        [k, v.replace(packages.name, `browser/${packages.name}`)])
       )
 
       return {
@@ -43,11 +42,23 @@ export default defineConfig([{
           'browser': browser,
           ...root,
         },
+        './window': {
+          'browser': windowBrowser,
+          ...windowNote,
+        },
         './browser': browser,
         ...rest,
       }
     },
     packageJson: false,
+  },
+}, {
+  ...baseConfig,
+  entry: {
+    [`browser/${packages.name}`]: 'src/index.ts',
+  },
+  define: {
+    __BROWSER__: JSON.stringify(true),
   },
 }, {
   ...baseConfig,

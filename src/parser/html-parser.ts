@@ -1,4 +1,4 @@
-import { JSDOM } from 'jsdom'
+import { getWindow } from 'dom-parser-react/window'
 import { DOCUMENT_FRAGMENT_NODE } from '../constants/node-type'
 
 export interface RootFragment {
@@ -9,9 +9,7 @@ export interface RootFragment {
 let parser: DOMParser | undefined
 
 const defaultParse = (source: string) => {
-  parser ??= __BROWSER__ || typeof DOMParser === 'function'
-    ? new DOMParser
-    : new (new JSDOM().window).DOMParser
+  parser ??= __BROWSER__ ? new DOMParser() : new (getWindow()).DOMParser()
 
   return parser.parseFromString(source, 'text/html')
 }

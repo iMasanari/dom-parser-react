@@ -10,15 +10,23 @@
   "exports": {
     ".": {
       "browser": {
-        "import": "./dist/dom-parser-react.browser.mjs",
-        "require": "./dist/dom-parser-react.browser.cjs"
+        "import": "./dist/browser/dom-parser-react.mjs",
+        "require": "./dist/browser/dom-parser-react.cjs"
       },
       "import": "./dist/dom-parser-react.mjs",
       "require": "./dist/dom-parser-react.cjs"
     },
+    "./window": {
+      "browser": {
+        "import": "./dist/window/browser.mjs",
+        "require": "./dist/window/browser.cjs"
+      },
+      "import": "./dist/window/node.mjs",
+      "require": "./dist/window/node.cjs"
+    },
     "./browser": {
-      "import": "./dist/dom-parser-react.browser.mjs",
-      "require": "./dist/dom-parser-react.browser.cjs"
+      "import": "./dist/browser/dom-parser-react.mjs",
+      "require": "./dist/browser/dom-parser-react.cjs"
     }
   },
   "files": [
