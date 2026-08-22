@@ -7,14 +7,14 @@
       "dom"
     ],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "paths": {
       "dom-parser-react/window": [
         "./src/window.node.ts"
       ]
     },
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "dist/",
     "declaration": true,
     "esModuleInterop": true,
@@ -23,6 +23,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vitest/jsdom"]
   }
 }

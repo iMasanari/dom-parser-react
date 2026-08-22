@@ -17,6 +17,7 @@
       "require": "./dist/dom-parser-react.cjs"
     },
     "./window": {
+      "_dom-parser-react-test": "./src/window.node.ts",
       "browser": {
         "import": "./dist/window/browser.mjs",
         "require": "./dist/window/browser.cjs"
@@ -74,6 +75,9 @@
     "react-dom": "^19.2.4",
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.11"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
   }
 }

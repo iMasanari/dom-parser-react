@@ -5,6 +5,7 @@ import { DOCUMENT_FRAGMENT_NODE, ELEMENT_NODE, TEXT_NODE } from '../src/constant
 import { htmlParser } from '../src/parser/html-parser'
 
 vi.stubGlobal('__BROWSER__', true)
+vi.mock('dom-parser-react/window', () => import('../src/window.browser'))
 
 it('parse a element', () => {
   const node = htmlParser('<div>test</div>', undefined) as Node

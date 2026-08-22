@@ -43,6 +43,7 @@ export default defineConfig([{
           ...root,
         },
         './window': {
+          '_dom-parser-react-test': './src/window.node.ts',
           'browser': windowBrowser,
           ...windowNote,
         },
