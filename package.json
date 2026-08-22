@@ -30,8 +30,7 @@
     }
   },
   "files": [
-    "dist",
-    "browser"
+    "dist"
   ],
   "scripts": {
     "build": "tsdown",

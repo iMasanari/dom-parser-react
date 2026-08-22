@@ -1,5 +1,0 @@
-{
-  "type": "module",
-  "main": "../dist/dom-parser-react.browser.cjs",
-  "module": "../dist/dom-parser-react.browser.mjs"
-}
